@@ -17,10 +17,11 @@ import com.http.server.util.Log;
 public class Process extends Thread{
 
 	private static Log log = new Log("debug",Process.class);
+	
 	private Socket socket;
 	private InputStream in;
 	private PrintStream out;
-	private final static String WEB_ROOT = "F:\\syudy\\demo";
+	private final static String WEB_ROOT = Process.class.getResource("/").getPath().substring(1) + "res/";
 	public Process(Socket socket) {
 		// TODO Auto-generated constructor stub
 		this.socket = socket;
@@ -84,8 +85,11 @@ public class Process extends Thread{
 	}
 
 	public void sendFile(String fileName){
+		log.debug("文件夹路径：{}",WEB_ROOT);
 		File file = new File(WEB_ROOT + fileName);
+		log.debug("文件名称:{}", file.getAbsolutePath());
 		if(!file.exists()){
+			log.info("文件不存在：{}", file.getName());
 			sendErrorMessage(404, "file not found");
 			return;
 		}
